@@ -4,19 +4,19 @@ function App() {
 
     const [cats, setCats]  = useState([]);
 
-    useEffect(async () => {
+    useEffect(() => {
 
-	 const response = await fetch('/cats');
-        console.log('got resp???', response);
-	
-/**	fetch("/cats").then(
+//	 const response = await fetch('/cats');
+  //      console.log('got resp???', response);
+
+	fetch("/cats").then(
 	    res => res.json()
 	).then(
 	    data => {
 		setCats(data);
 		console.log('got cats???', data);
 	    }
-	) */
+	) 
     }, []);
     
     return (
