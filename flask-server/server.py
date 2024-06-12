@@ -32,7 +32,7 @@ def workouts():
     
     # return {"foo": ["ack", "bar", "bas"]}
 
-    @app.route('/add', methods=['POST'])
+@app.route('/add', methods=['POST'])
 def add_data():
     data = request.get_json()  # Get the JSON data from the request
 
