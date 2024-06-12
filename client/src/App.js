@@ -29,7 +29,7 @@ function App() {
 
  const handleSubmit = async (e) => {
     e.preventDefault();
-     const data = { workoutId:1, date: new Date(), duration: 60 };
+     const data = { workoutId:1, date: '2024-06-12', duration: 60 };
 
     const response = await fetch('/add', {
       method: 'POST',

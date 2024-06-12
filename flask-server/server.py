@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 import mysql.connector
 
 
@@ -43,7 +43,7 @@ def add_data():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    query = "INSERT INTO workout_details(workout_id, date, duration_minutes) VALUES (%d, %s, %d)"
+    query = "INSERT INTO workout_details(workout_id, date, duration_minutes) VALUES (%s, %s, %s)"
     cursor.execute(query, (workoutId, date, duration))
     conn.commit()
 
