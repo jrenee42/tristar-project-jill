@@ -165,11 +165,10 @@ function App() {
     return (
 	<div class="container">
 	    <div class='workout-form'>
-	    Hello world
+	  
 
 
-	    <Button variant='contained' onClick={handleSubmit}> hi there </Button>
-		<Select options={workoutOptions} onChange={onWorkoutChange}/>
+	  	<Select options={workoutOptions} onChange={onWorkoutChange}/>
 
 		  <TextField
           label="Duration"
@@ -183,7 +182,9 @@ function App() {
 		     <DatePicker label="Date"
 				 value={date}
 			      onChange={setDate} />
-		     </LocalizationProvider>
+		 </LocalizationProvider>
+		<Button sx={{marginTop: '8px'}} variant='contained' onClick={handleSubmit}> add workout </Button>
+	
 
 	    </div>
 	    <ReactECharts
