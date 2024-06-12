@@ -16,7 +16,14 @@ function App() {
 		setCats(data);
 		console.log('got cats???', data);
 	    }
-	) 
+	);
+
+	fetch("/workouts").then(
+	     res => res.json()
+	).then(
+	    data => {
+		console.log('got workouts???', data);
+	    });
     }, []);
     
     return (
