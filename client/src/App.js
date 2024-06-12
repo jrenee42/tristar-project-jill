@@ -166,23 +166,31 @@ function App() {
 	<div class="container">
 	    <div class='workout-form'>
 	  
+		<div class='header-text'>
+   Add a workout
+		</div>
 
-
-	  	<Select options={workoutOptions} onChange={onWorkoutChange}/>
-
+		<div class='form-item'>
+	  	    <Select options={workoutOptions} onChange={onWorkoutChange}
+			    styles={{ menu: provided => ({ ...provided, zIndex: 9999 }) }}/>
+		</div>
+			<div class='form-item'>
 		  <TextField
           label="Duration"
           id="filled-start-adornment"
-          sx={{ m: 1, width: '25ch' }}
+		   
 		      value ={duration}
 		      onChange= {(e) => setDuration(e.target.value)}
           variant="filled"
 		  />
+			</div>
+			<div class='form-item'>
 		 <LocalizationProvider dateAdapter={AdapterDayjs}>
 		     <DatePicker label="Date"
 				 value={date}
 			      onChange={setDate} />
 		 </LocalizationProvider>
+			    </div>
 		<Button sx={{marginTop: '8px'}} variant='contained' onClick={handleSubmit}> add workout </Button>
 	
 

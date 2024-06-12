@@ -16,12 +16,17 @@ def get_db_connection():
     connection = mysql.connector.connect(**db_config)
     return connection
 
-def getDataFromTable(tableName):
+def getDataFromTable(tableName, specialQuery):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-
-    query = f'SELECT * FROM {tableName}'
-    cursor.execute(query)
+    print('specialq?' + specialQuery)
+    
+    if specialQuery:
+        cursor.execute(specialQuery)
+    else:
+        query = f'SELECT * FROM {tableName}'
+        cursor.execute(query)
+    
     rows = cursor.fetchall()
 
     cursor.close()
@@ -31,12 +36,21 @@ def getDataFromTable(tableName):
 
 @app.route('/actualWorkouts')
 def actualWorkouts():
-    return getDataFromTable('workout_details');
+    specialQuery = """ SELECT 
+    workout_details.date,
+    workout_details.duration_minutes,
+    workouts.workout_name
+FROM 
+    workout_details
+LEFT JOIN 
+    workouts ON workout_details.workout_id = workouts.id"""
+
+    return getDataFromTable('workout_details', specialQuery);
 
 @app.route('/workouts')
 def workout():
     return getDataFromTable('workouts');
-    
+
     # return {"foo": ["ack", "bar", "bas"]}
 
 @app.route('/add', methods=['POST'])
@@ -65,5 +79,5 @@ def cats():
     return {"cats": ['pippin', 'artemis', 'shadow', 'loki',' persephone', 'arghh']}
 
 if __name__ == "__main__":
-      app.run(debug=True)
-      
+    app.run(debug=True)
+    

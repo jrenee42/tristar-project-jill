@@ -46,5 +46,16 @@
 .workout-form {
     display: flex;
     flex-direction: column;
+    margin-left: 15px;
+    min-width: 400px;
 }
 
+.header-text {
+    font-size: 2em;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.form-item {
+    margin-bottom: 8px;
+}
