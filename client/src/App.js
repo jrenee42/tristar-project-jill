@@ -3,35 +3,27 @@ import React, {useState, useEffect} from 'react';
 function App() {
 
     const [cats, setCats]  = useState([]);
+    const [workoutTypes, setWorkoutTypes] = useState([]);
+    const [workoutDetails, setWorkoutDetails] = useState([]);
+	   
 
-    useEffect(() => {
 
-//	 const response = await fetch('/cats');
-  //      console.log('got resp???', response);
-
-	fetch("/cats").then(
+    const getData = (endpt, setter) => {
+		fetch(endpt).then(
 	    res => res.json()
 	).then(
 	    data => {
-		setCats(data);
-		console.log('got cats???', data);
+		setter(data);
+		console.log('got data???', data);
 	    }
 	);
+    };
 
-	fetch("/workouts").then(
-	     res => res.json()
-	).then(
-	    data => {
-		console.log('got workouts???', data);
-	    });
+    useEffect(() => {
+	getData("/cats", setCats);
+        getData("/workouts", setWorkoutTypes);
+        getData("/actualWorkouts", setWorkoutDetails);
 
-
-	fetch("/actualWorkouts").then(
-	     res => res.json()
-	).then(
-	    data => {
-		console.log('got actual workouts???', data);
-	    }); 
     }, []);
 
 
