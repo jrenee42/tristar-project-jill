@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import Button from '@mui/material/Button';
 
 function App() {
 
@@ -51,7 +52,7 @@ function App() {
 	    Hello world
 
 
-	    <button onClick={handleSubmit}> hi there </button>
+	    <Button variant='contained' onClick={handleSubmit}> hi there </Button>
 	</div>
     )
 }
