@@ -25,10 +25,33 @@ function App() {
 		console.log('got workouts???', data);
 	    });
     }, []);
+
+
+ const handleSubmit = async (e) => {
+    e.preventDefault();
+     const data = { workoutId:1, date: new Date(), duration: 60 };
+
+    const response = await fetch('/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    console.log(result);
+  };
+
+
+    
     
     return (
 	<div>
 	    Hello world
+
+
+	    <button onClick={handleSubmit}> hi there </button>
 	</div>
     )
 }
