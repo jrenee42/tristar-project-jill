@@ -24,6 +24,14 @@ function App() {
 	    data => {
 		console.log('got workouts???', data);
 	    });
+
+
+	fetch("/actualWorkouts").then(
+	     res => res.json()
+	).then(
+	    data => {
+		console.log('got actual workouts???', data);
+	    }); 
     }, []);
 
 

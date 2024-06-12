@@ -16,19 +16,26 @@ def get_db_connection():
     connection = mysql.connector.connect(**db_config)
     return connection
 
-
-@app.route('/workouts')
-def workouts():
+def getDataFromTable(tableName):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute('SELECT * FROM workouts')
+    query = f'SELECT * FROM {tableName}'
+    cursor.execute(query)
     rows = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
     return jsonify(rows);
+
+@app.route('/actualWorkouts')
+def actualWorkouts():
+    return getDataFromTable('workout_details');
+
+@app.route('/workouts')
+def workout():
+    return getDataFromTable('workouts');
     
     # return {"foo": ["ack", "bar", "bas"]}
 
