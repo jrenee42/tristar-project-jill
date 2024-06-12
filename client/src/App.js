@@ -1,12 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import Button from '@mui/material/Button';
+import Select from 'react-select'
+
 
 function App() {
 
     const [cats, setCats]  = useState([]);
-    const [workoutTypes, setWorkoutTypes] = useState([]);
+    // const [workoutTypes, setWorkoutTypes] = useState([]);
     const [workoutDetails, setWorkoutDetails] = useState([]);
-	   
+
+    const [workoutOptions, setWorkoutOptions] = useState([]);
+
+   	
 
 
     const getData = (endpt, setter) => {
@@ -16,16 +21,25 @@ function App() {
 	    data => {
 		setter(data);
 		console.log('got data???', data);
+		return data;
 	    }
 	);
     };
 
-    useEffect(() => {
-	getData("/cats", setCats);
-        getData("/workouts", setWorkoutTypes);
-        getData("/actualWorkouts", setWorkoutDetails);
+    const makeOptions = workouts => {
+	const opts = workouts.map(w=> ({value: w.id, label: w.workout_name}));
+	setWorkoutOptions(opts);
+    };
+				  
 
-    }, []);
+    useEffect(() => {
+	
+	getData("/cats", setCats);
+        getData("/workouts", makeOptions);
+
+            getData("/actualWorkouts", setWorkoutDetails);
+	}
+    , []);
 
 
  const handleSubmit = async (e) => {
@@ -53,6 +67,7 @@ function App() {
 
 
 	    <Button variant='contained' onClick={handleSubmit}> hi there </Button>
+	    <Select options={workoutOptions} />
 	</div>
     )
 }
