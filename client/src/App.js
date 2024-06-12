@@ -5,6 +5,9 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+
+import ReactECharts from 'echarts-for-react'; 
 
 import Select from 'react-select'
 
@@ -20,7 +23,7 @@ function App() {
     const [workoutOptions, setWorkoutOptions] = useState([]);
 
     const [duration, setDuration] = useState(30);
-    const [date, setDate] = useState();
+    const [date, setDate] = useState(dayjs(new Date()));
    	
 
 
@@ -70,6 +73,94 @@ function App() {
 
     const onWorkoutChange = wtype => setWorkoutType(wtype.value);
 
+
+     const option = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      // Use axis to trigger tooltip
+      type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+    }
+  },
+  legend: {},
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'value'
+  },
+  yAxis: {
+    type: 'category',
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  },
+  series: [
+    {
+      name: 'Direct',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [320, 302, 301, 334, 390, 330, 320]
+    },
+    {
+      name: 'Mail Ad',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [120, 132, 101, 134, 90, 230, 210]
+    },
+    {
+      name: 'Affiliate Ad',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [220, 182, 191, 234, 290, 330, 310]
+    },
+    {
+      name: 'Video Ad',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [150, 212, 201, 154, 190, 330, 410]
+    },
+    {
+      name: 'Search Engine',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [820, 832, 901, 934, 1290, 1330, 1320]
+    }
+  ]
+};
+
+    
     
     return (
 	<div class="container">
@@ -89,11 +180,18 @@ function App() {
           variant="filled"
 		  />
 		 <LocalizationProvider dateAdapter={AdapterDayjs}>
-		  <DatePicker label="Date"
+		     <DatePicker label="Date"
+				 value={date}
 			      onChange={setDate} />
 		     </LocalizationProvider>
 
-	</div>
+	    </div>
+	    <ReactECharts
+		option={option}
+		 style={{ height: '300px', width: '100%' }}
+  notMerge={true}
+  lazyUpdate={true}
+/>
 	    </div>
     )
 }
