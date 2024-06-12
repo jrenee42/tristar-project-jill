@@ -1,16 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import Select from 'react-select'
+
+import './App.css';
 
 
 function App() {
 
     const [cats, setCats]  = useState([]);
-    // const [workoutTypes, setWorkoutTypes] = useState([]);
+    const [workoutType, setWorkoutType] = useState([]);
     const [workoutDetails, setWorkoutDetails] = useState([]);
 
     const [workoutOptions, setWorkoutOptions] = useState([]);
 
+    const [duration, setDuration] = useState(30);
+    const [date, setDate] = useState();
    	
 
 
@@ -58,17 +68,33 @@ function App() {
     console.log(result);
   };
 
+    const onWorkoutChange = wtype => setWorkoutType(wtype.value);
 
     
-    
     return (
-	<div>
+	<div class="container">
+	    <div class='workout-form'>
 	    Hello world
 
 
 	    <Button variant='contained' onClick={handleSubmit}> hi there </Button>
-	    <Select options={workoutOptions} />
+		<Select options={workoutOptions} onChange={onWorkoutChange}/>
+
+		  <TextField
+          label="Duration"
+          id="filled-start-adornment"
+          sx={{ m: 1, width: '25ch' }}
+		      value ={duration}
+		      onChange= {(e) => setDuration(e.target.value)}
+          variant="filled"
+		  />
+		 <LocalizationProvider dateAdapter={AdapterDayjs}>
+		  <DatePicker label="Date"
+			      onChange={setDate} />
+		     </LocalizationProvider>
+
 	</div>
+	    </div>
     )
 }
 
