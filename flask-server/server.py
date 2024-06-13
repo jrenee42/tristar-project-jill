@@ -38,7 +38,10 @@ def actualWorkouts():
 FROM 
     workout_details
 LEFT JOIN 
-    workouts ON workout_details.workout_id = workouts.id"""
+    workouts ON workout_details.workout_id = workouts.id
+
+order by workout_details.date
+    """
 
     return getDataFromTable( specialQuery);
 

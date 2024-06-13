@@ -18,6 +18,7 @@ function App() {
 
     const [workoutType, setWorkoutType] = useState([]);
     const [workoutDetails, setWorkoutDetails] = useState([]);
+    const [workoutNames, setWorkoutNames] = useState([]);
 
     const [workoutOptions, setWorkoutOptions] = useState([]);
 
@@ -41,19 +42,66 @@ function App() {
     const makeOptions = workouts => {
 	const opts = workouts.map(w=> ({value: w.id, label: w.workout_name}));
 	setWorkoutOptions(opts);
+	setWorkoutNames(workouts.map(w=>w.workout_name));
     };
 				  
 
     useEffect(() => {
         getData("/workouts", makeOptions);
-        getData("/actualWorkouts", setWorkoutDetails);
-	}
-    , []);
+        getData("/actualWorkouts", processData);
+	}, []);
+
+
+    const processData = data => {
+	const result = {};
+	const uniqueWorkouts = new Set();
+	
+	data.forEach(item => {
+  const { date, duration_minutes, workout_name } = item;
+  if (!result[date]) {
+    result[date] = {};
+  }
+  if (!result[date][workout_name]) {
+    result[date][workout_name] = 0;
+  }
+	    result[date][workout_name] += duration_minutes;
+
+	    uniqueWorkouts.add(item.workout_name);
+	});
+
+	
+
+	console.log('processed?', result);
+	const uniqueWorkoutsList = Array.from(uniqueWorkouts);
+
+
+	const dataLists = [];
+	const keys = Object.keys(result);
+	keys.forEach(oneDay => {
+	    const workoutList = new Array( uniqueWorkoutsList.length);
+	    uniqueWorkoutsList.forEach((wname, index) => {
+		if (oneDay[wname]){
+		    workoutList[index] = oneDay[wname];
+		}
+		dataLists.push(workoutList);
+
+	    });
+	});
+
+	console.log('lists???', dataLists);
+	
+    };
+
+	
+
+    
 
 
  const handleSubmit = async (e) => {
-    e.preventDefault();
-     const data = { workoutId:1, date: '2024-06-12', duration: 60 };
+     e.preventDefault();
+
+     const dateStr = dayjs(date).format('YYYY-MM-DD');
+     const data = { workoutId:workoutType, date: dateStr, duration};
 
     const response = await fetch('/add', {
       method: 'POST',
@@ -103,7 +151,7 @@ function App() {
       emphasis: {
         focus: 'series'
       },
-      data: [320, 302, 301, 334, 390, 330, 320]
+      data: [320, , 301, 334, 390, 330, 320]
     },
     {
       name: 'Mail Ad',
@@ -115,7 +163,7 @@ function App() {
       emphasis: {
         focus: 'series'
       },
-      data: [120, 132, 101, 134, 90, 230, 210]
+      data: [120, 132, , 134, 90, 230, 210]
     },
     {
       name: 'Affiliate Ad',
