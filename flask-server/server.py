@@ -69,10 +69,6 @@ def add_data():
 
     return jsonify({'message': 'Data added successfully!'}), 201
 
-# cats api
-@app.route("/cats")
-def cats():
-    return {"cats": ['pippin', 'artemis', 'shadow', 'loki',' persephone', 'arghh']}
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -16,7 +16,6 @@ import './App.css';
 
 function App() {
 
-    const [cats, setCats]  = useState([]);
     const [workoutType, setWorkoutType] = useState([]);
     const [workoutDetails, setWorkoutDetails] = useState([]);
 
@@ -46,11 +45,8 @@ function App() {
 				  
 
     useEffect(() => {
-	
-	getData("/cats", setCats);
         getData("/workouts", makeOptions);
-
-            getData("/actualWorkouts", setWorkoutDetails);
+        getData("/actualWorkouts", setWorkoutDetails);
 	}
     , []);
 
