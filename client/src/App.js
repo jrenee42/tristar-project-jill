@@ -77,15 +77,16 @@ function App() {
 
 	const dataLists = [];
 	const keys = Object.keys(result);
+	console.log("argh...keys?", keys);
 	keys.forEach(oneDay => {
 	    const workoutList = new Array( uniqueWorkoutsList.length);
 	    uniqueWorkoutsList.forEach((wname, index) => {
-		if (oneDay[wname]){
-		    workoutList[index] = oneDay[wname];
+		const duration = result[oneDay][wname];
+		if (duration){
+		    workoutList[index] = duration;
 		}
-		dataLists.push(workoutList);
-
 	    });
+         dataLists.push(workoutList);
 	});
 
 	console.log('lists???', dataLists);
