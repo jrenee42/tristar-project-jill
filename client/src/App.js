@@ -90,6 +90,12 @@ function App() {
 	});
 
 	console.log('lists???', dataLists);
+
+        const seriesData = dataLists.map(durations => ({
+	  
+	    
+
+	}));
 	
     };
 
