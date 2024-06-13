@@ -171,7 +171,9 @@ function App() {
 		</div>
 
 		<div class='form-item'>
-	  	    <Select options={workoutOptions} onChange={onWorkoutChange}
+	  	    <Select options={workoutOptions}
+			    placeholder='Select Workout'
+			    onChange={onWorkoutChange}
 			    styles={{ menu: provided => ({ ...provided, zIndex: 9999 }) }}/>
 		</div>
 			<div class='form-item'>

@@ -16,16 +16,11 @@ def get_db_connection():
     connection = mysql.connector.connect(**db_config)
     return connection
 
-def getDataFromTable(tableName, specialQuery):
+def getDataFromTable(specialQuery):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    print('specialq?' + specialQuery)
     
-    if specialQuery:
-        cursor.execute(specialQuery)
-    else:
-        query = f'SELECT * FROM {tableName}'
-        cursor.execute(query)
+    cursor.execute(specialQuery)
     
     rows = cursor.fetchall()
 
@@ -45,11 +40,12 @@ FROM
 LEFT JOIN 
     workouts ON workout_details.workout_id = workouts.id"""
 
-    return getDataFromTable('workout_details', specialQuery);
+    return getDataFromTable( specialQuery);
 
 @app.route('/workouts')
 def workout():
-    return getDataFromTable('workouts');
+    query = 'SELECT * FROM workouts'
+    return getDataFromTable(query);
 
     # return {"foo": ["ack", "bar", "bas"]}
 
