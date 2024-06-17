@@ -63,9 +63,16 @@ jill@jills-air flask-server % source venv/bin/activate
 
 
 
+
+
 >>>>>>
 jill@jills-air flask-server % source venv/bin/activate
 
 to run it:
 pip3 install mysql-connector-python  (NOT mysql.connector)
-(venv) jill@jills-air flask-server % python3 server.py 
+(venv) jill@jills-air flask-server % python3 server.py
+
+
+run the frontend:
+
+npm start in th eclient dir

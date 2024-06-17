@@ -19,6 +19,7 @@ function App() {
     const [workoutType, setWorkoutType] = useState([]);
     const [workoutDetails, setWorkoutDetails] = useState([]);
     const [workoutNames, setWorkoutNames] = useState([]);
+    const [graphData, setGraphData] = useState([]);
 
     const [workoutOptions, setWorkoutOptions] = useState([]);
 
@@ -76,6 +77,7 @@ function App() {
         const dataLists = [];
         const keys = Object.keys(result);
         console.log("argh...keys?", keys);
+        console.log("unique workout list?", uniqueWorkoutsList);
 
         uniqueWorkoutsList.forEach(wname => {
             const workoutList = new Array(keys.length);
@@ -87,26 +89,27 @@ function App() {
                     workoutList[index] = duration;
                 }
 
-
-                const workoutList = new Array(uniqueWorkoutsList.length);
-                uniqueWorkoutsList.forEach((wname, index) => {
-                    const duration = result[oneDay][wname];
-                    if (duration) {
-                        workoutList[index] = duration;
-                    }
-                });
-                dataLists.push(workoutList);
             });
+            dataLists.push(workoutList);
         })
 
+        // these lists are correct :)
         console.log('lists???', dataLists);
 
-        //  const seriesData = dataLists.map(durations => ({
+        const seriesData = dataLists.map((durations, index) => ({
+            name: uniqueWorkoutsList[index],
+            type: 'bar',
+            stack: 'total',
+            label: {
+                show: true
+            },
+            emphasis: {
+                focus: 'series'
+            },
+            data: durations
+        }));
 
-
-//
-        //}));
-
+        setGraphData(seriesData);
     };
 
 
@@ -153,68 +156,7 @@ function App() {
             type: 'category',
             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         },
-        series: [
-            {
-                name: 'Direct',
-                type: 'bar',
-                stack: 'total',
-                label: {
-                    show: true
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: [320, , 301, 334, 390, 330, 320]
-            },
-            {
-                name: 'Mail Ad',
-                type: 'bar',
-                stack: 'total',
-                label: {
-                    show: true
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: [120, 132, , 134, 90, 230, 210]
-            },
-            {
-                name: 'Affiliate Ad',
-                type: 'bar',
-                stack: 'total',
-                label: {
-                    show: true
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: [220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-                name: 'Video Ad',
-                type: 'bar',
-                stack: 'total',
-                label: {
-                    show: true
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: [150, 212, 201, 154, 190, 330, 410]
-            },
-            {
-                name: 'Search Engine',
-                type: 'bar',
-                stack: 'total',
-                label: {
-                    show: true
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: [820, 832, 901, 934, 1290, 1330, 1320]
-            }
-        ]
+        series: graphData,
     };
 
 
