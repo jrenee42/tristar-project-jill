@@ -58,7 +58,11 @@ function App() {
         const uniqueWorkouts = new Set();
 
         data.forEach(item => {
-            const {date, duration_minutes, workout_name} = item;
+            const {date: longDate, duration_minutes, workout_name} = item;
+
+            // console.log("arghh: date???", date, typeof date);
+            const date = dayjs(longDate).format('MM-DD-YYYY');
+
             if (!result[date]) {
                 result[date] = {};
             }
