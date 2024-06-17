@@ -17,8 +17,6 @@ import './App.css';
 function App() {
 
     const [workoutType, setWorkoutType] = useState([]);
-    const [workoutDetails, setWorkoutDetails] = useState([]);
-    const [workoutNames, setWorkoutNames] = useState([]);
     const [graphData, setGraphData] = useState([]);
     const [daysForGraph, setDaysForGraph] = useState([]);
 
@@ -43,7 +41,6 @@ function App() {
     const makeOptions = workouts => {
         const opts = workouts.map(w => ({value: w.id, label: w.workout_name}));
         setWorkoutOptions(opts);
-        setWorkoutNames(workouts.map(w => w.workout_name));
     };
 
 
@@ -57,6 +54,8 @@ function App() {
         const result = {};
         const uniqueWorkouts = new Set();
 
+        // make a map of dates; to a list of all teh workouts for each date
+        // and add up similar workouts (so 2 walks of 20 min on the same day equals one workout of 40 min)
         data.forEach(item => {
             const {date: longDate, duration_minutes, workout_name} = item;
 
@@ -75,20 +74,25 @@ function App() {
         });
 
 
-        console.log('processed?', result);
         const uniqueWorkoutsList = Array.from(uniqueWorkouts);
-
 
         const dataLists = [];
         const keys = Object.keys(result);
-        console.log("argh...keys?", keys);
         setDaysForGraph(keys);
-        console.log("unique workout list?", uniqueWorkoutsList);
 
+        // now: make a list of; by workout, an entry for each day that is present
+        // b/c this is the format that echarts wants for the stacked graph
+
+        // so if theer are three days, and mon has 10 min of biking,
+        // tues has 20 min of biking,
+        // mon has 25 min of walking;
+        // and wed has 30 min of walking:
+
+        // and the unique workout list would be ['biking', 'walking'];
+        // then dataLists would be:
+        //[[10,25], [20, ,], [,30]]
         uniqueWorkoutsList.forEach(wname => {
             const workoutList = new Array(keys.length);
-
-
             keys.forEach((oneDay, index) => {
                 const duration = result[oneDay][wname];
                 if (duration) {
@@ -98,9 +102,6 @@ function App() {
             });
             dataLists.push(workoutList);
         })
-
-        // these lists are correct :)
-        console.log('lists???', dataLists);
 
         const seriesData = dataLists.map((durations, index) => ({
             name: uniqueWorkoutsList[index],
@@ -135,6 +136,10 @@ function App() {
 
         const result = await response.json();
         console.log(result);
+
+
+        //now; refetch data:
+        getData("/actualWorkouts", processData);
     };
 
     const onWorkoutChange = wtype => setWorkoutType(wtype.value);
