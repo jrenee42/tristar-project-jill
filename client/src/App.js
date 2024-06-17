@@ -19,12 +19,9 @@ function App() {
     const [workoutType, setWorkoutType] = useState([]);
     const [graphData, setGraphData] = useState([]);
     const [daysForGraph, setDaysForGraph] = useState([]);
-
     const [workoutOptions, setWorkoutOptions] = useState([]);
-
     const [duration, setDuration] = useState(30);
     const [date, setDate] = useState(dayjs(new Date()));
-
 
     const getData = (endpt, setter) => {
         fetch(endpt).then(
@@ -32,8 +29,6 @@ function App() {
         ).then(
             data => {
                 setter(data);
-                console.log('got data???', data);
-                return data;
             }
         );
     };
@@ -58,8 +53,6 @@ function App() {
         // and add up similar workouts (so 2 walks of 20 min on the same day equals one workout of 40 min)
         data.forEach(item => {
             const {date: longDate, duration_minutes, workout_name} = item;
-
-            // console.log("arghh: date???", date, typeof date);
             const date = dayjs(longDate).format('MM-DD-YYYY');
 
             if (!result[date]) {
@@ -134,9 +127,7 @@ function App() {
             body: JSON.stringify(data),
         });
 
-        const result = await response.json();
-        console.log(result);
-
+        await response.json();
 
         //now; refetch data:
         getData("/actualWorkouts", processData);
