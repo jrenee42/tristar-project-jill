@@ -9,19 +9,25 @@ import dayjs from 'dayjs';
 
 import ReactECharts from 'echarts-for-react';
 
-import Select from 'react-select'
+import Select from 'react-select';
 
 import './App.css';
 
-
 function App() {
 
-    const [workoutType, setWorkoutType] = useState([]);
+    // data that is shown in the graph:
     const [graphData, setGraphData] = useState([]);
     const [daysForGraph, setDaysForGraph] = useState([]);
+
+    // for select dropdown
     const [workoutOptions, setWorkoutOptions] = useState([]);
+
+    // for form:
+    const [workoutType, setWorkoutType] = useState([]);
     const [duration, setDuration] = useState(30);
-    const [date, setDate] = useState(dayjs(new Date()));
+    const defaultDate = dayjs(new Date());
+    console.log('using date????', defaultDate);
+    const [date, setDate] = useState(defaultDate);
 
     const getData = (endpt, setter) => {
         fetch(endpt).then(
@@ -29,6 +35,7 @@ function App() {
         ).then(
             data => {
                 setter(data);
+                console.log("ack; data?", data);
             }
         );
     };
@@ -49,8 +56,9 @@ function App() {
         const result = {};
         const uniqueWorkouts = new Set();
 
-        // make a map of dates; to a list of all teh workouts for each date
+        // make a map of dates; to a list of all the workouts for each date
         // and add up similar workouts (so 2 walks of 20 min on the same day equals one workout of 40 min)
+        // at the same time; collect all the actual workouts used; so only those show up in the graph
         data.forEach(item => {
             const {date: longDate, duration_minutes, workout_name} = item;
             const date = dayjs(longDate).format('MM-DD-YYYY');
@@ -66,7 +74,7 @@ function App() {
             uniqueWorkouts.add(item.workout_name);
         });
 
-
+        // used a set to make them unique, now get the unique list as an array:
         const uniqueWorkoutsList = Array.from(uniqueWorkouts);
 
         const dataLists = [];
@@ -76,7 +84,7 @@ function App() {
         // now: make a list of; by workout, an entry for each day that is present
         // b/c this is the format that echarts wants for the stacked graph
 
-        // so if theer are three days, and mon has 10 min of biking,
+        // so if there are three days, and mon has 10 min of biking,
         // tues has 20 min of biking,
         // mon has 25 min of walking;
         // and wed has 30 min of walking:
@@ -116,7 +124,10 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const dateStr = dayjs(date).format('YYYY-MM-DD');
+        console.log("in handleSubmit", date);
+        const dateStr = dayjs(date).format('MM-DD-YYYY');
+        console.log("just formatted:", dateStr);
+
         const data = {workoutId: workoutType, date: dateStr, duration};
 
         const response = await fetch('/add', {
@@ -129,7 +140,9 @@ function App() {
 
         await response.json();
 
-        //now; refetch data:
+        // now; refetch data:
+        // optimization:  add the new data to the raw data; and reprocess it here
+        // without adding another network call.
         getData("/actualWorkouts", processData);
     };
 
@@ -161,6 +174,10 @@ function App() {
         series: graphData,
     };
 
+    const arghSetDate = x => {
+        console.log('about to set date????', x);
+        setDate(x);
+    };
 
     return (
         <div class="container">
@@ -190,7 +207,7 @@ function App() {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker label="Date"
                                     value={date}
-                                    onChange={setDate}/>
+                                    onChange={arghSetDate}/>
                     </LocalizationProvider>
                 </div>
                 <Button sx={{marginTop: '8px'}} variant='contained' onClick={handleSubmit}> add workout </Button>
