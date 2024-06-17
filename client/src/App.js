@@ -26,7 +26,6 @@ function App() {
     const [workoutType, setWorkoutType] = useState([]);
     const [duration, setDuration] = useState(30);
     const defaultDate = dayjs(new Date());
-    console.log('using date????', defaultDate);
     const [date, setDate] = useState(defaultDate);
 
     const getData = (endpt, setter) => {
@@ -35,7 +34,6 @@ function App() {
         ).then(
             data => {
                 setter(data);
-                console.log("ack; data?", data);
             }
         );
     };
@@ -61,7 +59,6 @@ function App() {
         // at the same time; collect all the actual workouts used; so only those show up in the graph
         data.forEach(item => {
             const {date, duration_minutes, workout_name} = item;
-            // const date = dayjs(longDate).format('MM-DD-YYYY');
 
             if (!result[date]) {
                 result[date] = {};
@@ -124,9 +121,7 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log("in handleSubmit", date);
         const dateStr = dayjs(date).format('MM-DD-YYYY');
-        console.log("just formatted:", dateStr);
 
         const data = {workoutId: workoutType, date: dateStr, duration};
 
@@ -174,11 +169,6 @@ function App() {
         series: graphData,
     };
 
-    const arghSetDate = x => {
-        console.log('about to set date????', x);
-        setDate(x);
-    };
-
     return (
         <div class="container">
             <div class='workout-form'>
@@ -193,6 +183,7 @@ function App() {
                             onChange={onWorkoutChange}
                             styles={{menu: provided => ({...provided, zIndex: 9999})}}/>
                 </div>
+
                 <div class='form-item'>
                     <TextField
                         label="Duration"
@@ -203,15 +194,16 @@ function App() {
                         variant="filled"
                     />
                 </div>
+
                 <div class='form-item'>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker label="Date"
                                     value={date}
-                                    onChange={arghSetDate}/>
+                                    onChange={setDate}/>
                     </LocalizationProvider>
                 </div>
-                <Button sx={{marginTop: '8px'}} variant='contained' onClick={handleSubmit}> add workout </Button>
 
+                <Button sx={{marginTop: '8px'}} variant='contained' onClick={handleSubmit}> add workout </Button>
 
             </div>
             <ReactECharts
