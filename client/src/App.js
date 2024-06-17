@@ -20,6 +20,7 @@ function App() {
     const [workoutDetails, setWorkoutDetails] = useState([]);
     const [workoutNames, setWorkoutNames] = useState([]);
     const [graphData, setGraphData] = useState([]);
+    const [daysForGraph, setDaysForGraph] = useState([]);
 
     const [workoutOptions, setWorkoutOptions] = useState([]);
 
@@ -77,6 +78,7 @@ function App() {
         const dataLists = [];
         const keys = Object.keys(result);
         console.log("argh...keys?", keys);
+        setDaysForGraph(keys);
         console.log("unique workout list?", uniqueWorkoutsList);
 
         uniqueWorkoutsList.forEach(wname => {
@@ -154,7 +156,7 @@ function App() {
         },
         yAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: daysForGraph,
         },
         series: graphData,
     };
