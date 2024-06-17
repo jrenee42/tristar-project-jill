@@ -32,7 +32,7 @@ CREATE TABLE workouts (
 CREATE TABLE workout_details (
     id INT AUTO_INCREMENT PRIMARY KEY,
     workout_id INT,
-    date DATE,
+    date varchar(10),
     duration_minutes INT,
     FOREIGN KEY (workout_id) REFERENCES workouts(id)
 );

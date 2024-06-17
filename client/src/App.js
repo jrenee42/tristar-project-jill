@@ -60,8 +60,8 @@ function App() {
         // and add up similar workouts (so 2 walks of 20 min on the same day equals one workout of 40 min)
         // at the same time; collect all the actual workouts used; so only those show up in the graph
         data.forEach(item => {
-            const {date: longDate, duration_minutes, workout_name} = item;
-            const date = dayjs(longDate).format('MM-DD-YYYY');
+            const {date, duration_minutes, workout_name} = item;
+            // const date = dayjs(longDate).format('MM-DD-YYYY');
 
             if (!result[date]) {
                 result[date] = {};
